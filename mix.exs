@@ -5,9 +5,10 @@ defmodule RefElixir.MixProject do
     [
       app: :ref_elixir,
       version: "0.1.0",
-      elixir: "~> 1.18",
+      elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      releases: releases()
     ]
   end
 
@@ -23,6 +24,17 @@ defmodule RefElixir.MixProject do
     [
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+    ]
+  end
+
+  defp releases do
+    [
+      ref_elixir: [
+        applications: [ref_elixir: :permanent],
+        include_executables_for: [:unix],
+        steps: [:assemble, :tar],
+        include_erts: System.get_env("MIX_TARGET_INCLUDE_ERTS") || true
+      ]
     ]
   end
 end
