@@ -10,6 +10,7 @@ defmodule RefElixir.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      releases: releases(),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
       listeners: [Phoenix.CodeReloader]
     ]
@@ -83,6 +84,17 @@ defmodule RefElixir.MixProject do
         "phx.digest"
       ],
       precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"]
+    ]
+  end
+
+  defp releases do
+    [
+      ref_elixir: [
+        applications: [ref_elixir: :permanent],
+        include_executables_for: [:unix],
+        steps: [:assemble, :tar],
+        include_erts: System.get_env("MIX_TARGET_INCLUDE_ERTS") || true
+      ]
     ]
   end
 end
